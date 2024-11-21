@@ -1,7 +1,12 @@
 import { SafeAreaView, ScrollView, View, StyleSheet, Image } from "react-native";
 import { Text } from '@rneui/themed';
+import { useFonts } from 'expo-font';
 
 export default function OndeServirScreen() {
+    const [fontsLoaded] = useFonts({
+        'Opensans': require('../assets/OpenSans.ttf')
+    })
+
     return (
         <ScrollView style={styles.container}>
             <View style={styles.content}>
@@ -51,6 +56,7 @@ const styles = StyleSheet.create({
         fontSize: 19,
         color: 'white',
         marginBottom: 10,
+        fontFamily: 'Opensans'
     },
     subheading: {
         fontSize: 20,
@@ -64,5 +70,6 @@ const styles = StyleSheet.create({
         marginLeft: 10,
         marginTop: 10,
         marginBottom: 10,
+        fontFamily: 'Opensans'
     },
 });

@@ -1,10 +1,14 @@
 import { ScrollView, Text, View, StyleSheet, Linking, TouchableOpacity } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { useFonts } from 'expo-font';
 
 export default function QuemSomosScreen() {
     const handlePress = () => {
         Linking.openURL('https://www.instagram.com/redeescolhidos')
     }
+    const [fontsLoaded] = useFonts({
+        'Opensans': require('../assets/OpenSans.ttf')
+    })
     return (
         <ScrollView style={styles.container}>
             <View style={styles.content}>
@@ -55,6 +59,7 @@ const styles = StyleSheet.create({
         fontSize: 19,
         color: 'white',
         marginBottom: 10,
+        fontFamily: 'Opensans'
     },
     subheading: {
         fontSize: 20,
@@ -74,6 +79,7 @@ const styles = StyleSheet.create({
         color: 'white',
         lineHeight: 24,
         marginBottom: 10,
+        fontFamily:'Opensans'
     },
     subtitle: {
         fontSize: 20,
@@ -81,6 +87,7 @@ const styles = StyleSheet.create({
         color: 'white',
         marginBottom: 20,
         textAlign: 'center',
+        fontFamily:'Opensans'
     },
     instagramContainer: {
         flexDirection: 'row',

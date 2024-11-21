@@ -3,7 +3,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Text, View, Dimensions, Image, StyleSheet, FlatList, Modal, TouchableOpacity } from 'react-native';
 
 export default function MyCarousel() {
-
     const [currentIndex, setCurrentIndex] = useState(0);
     const flatListRef = useRef(null);
     const [carousel, setCarouselData] = useState([]);
@@ -11,33 +10,29 @@ export default function MyCarousel() {
     const [selectedImage, setSelectedImage] = useState(null);
 
     const autoRotate = () => {
-        const nextIndex = (currentIndex + 1) % carousel.length;
-
-        if (nextIndex >= 0 && nextIndex < carousel.length) {
-            const nextItemOffset = (Dimensions.get('window').width + 10) * nextIndex;
-            flatListRef?.current?.scrollToOffset({
-                animated: true,
-                offset: nextItemOffset,
-            });
-            setCurrentIndex(nextIndex);
-        } else {
-            setCurrentIndex(0);
-        }
+        const nextIndex = currentIndex === carousel.length - 1 ? 0 : currentIndex + 1;
+        flatListRef?.current?.scrollToOffset({
+            animated: true,
+            offset: (Dimensions.get('window').width + 10) * nextIndex,
+        });
+        setCurrentIndex(nextIndex);
     };
 
     useEffect(() => {
-        const interval = setInterval(autoRotate, 4000);
-
-        return () => clearInterval(interval);
-    }, [currentIndex]);
+        if (carousel.length > 0) {
+            const interval = setInterval(autoRotate, 4000);
+            return () => clearInterval(interval);
+        }
+    }, [carousel, currentIndex]);
 
     useEffect(() => {
-        axios.get('http://192.168.0.134:8000/api/carousel/')
-            .then(response => {
+        axios
+            .get('http://192.168.0.134:8000/api/carousel/')
+            .then((response) => {
                 console.log('Requisição do Carousel feita');
                 setCarouselData(response.data);
             })
-            .catch(error => {
+            .catch((error) => {
                 console.log('Erro na requisição:', error);
             });
     }, []);
@@ -45,6 +40,12 @@ export default function MyCarousel() {
     const handleImagePress = (imageUri) => {
         setSelectedImage(imageUri);
         setModalVisible(true);
+    };
+
+    const handleScrollEnd = (event) => {
+        const offsetX = event.nativeEvent.contentOffset.x;
+        const newIndex = Math.round(offsetX / (Dimensions.get('window').width + 10));
+        setCurrentIndex(newIndex);
     };
 
     return (
@@ -62,16 +63,17 @@ export default function MyCarousel() {
                 )}
                 horizontal
                 showsHorizontalScrollIndicator={false}
-                pagingEnabled={true}
+                pagingEnabled
                 snapToInterval={Dimensions.get('window').width + 10}
                 decelerationRate="fast"
                 keyExtractor={(item, index) => index.toString()}
+                onMomentumScrollEnd={handleScrollEnd}
             />
 
             {/* Modal to show the full-sized image */}
             <Modal
                 visible={modalVisible}
-                transparent={true}
+                transparent
                 animationType="fade"
                 onRequestClose={() => setModalVisible(false)}
             >

@@ -8,10 +8,14 @@ import HomeScreen from "../screens/HomeScreen";
 import QuemSomosScreen from "../screens/QuemSomosScreen";
 import OndeServirScreen from "../screens/OndeServir";
 import GaleriaFotosScreen from "../screens/GaleriaDeFotos";
+import { useFonts } from 'expo-font';
 
 const Drawer = createDrawerNavigator();
 
 export const MyDrawer = () => {
+    const [fontsLoaded] = useFonts({
+        'Opensans': require('../assets/OpenSans.ttf')
+    })
     return (
         <Drawer.Navigator
             drawerContent={(props) => {
@@ -33,7 +37,7 @@ export const MyDrawer = () => {
                 drawerLabelStyle: {
                     color: 'white',
                     fontSize: 20,
-                    fontFamily: 'Georgia',
+                    fontFamily: 'Opensans',
                 },
                 headerStyle:{
                     backgroundColor: '#000000'
@@ -41,7 +45,7 @@ export const MyDrawer = () => {
                 headerTintColor: 'white',
                 headerTitleStyle: {
                     fontWeight: 'bold',
-                    fontFamily: 'Gotham Black'
+                    fontFamily: 'Opensans'
                 }
             }}
         >
@@ -58,7 +62,7 @@ export const MyDrawer = () => {
                 }}
             />
             <Drawer.Screen name="Galeria de Fotos" component={GaleriaFotosScreen} options={{
-                drawerIcon: () => <Entypo name="camera" size={22} color="white" />
+                drawerIcon: () => <Entypo name="camera" size={22} color="white" />,
                 }}
             />
         </Drawer.Navigator>
