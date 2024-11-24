@@ -19,7 +19,7 @@ export default function MyCarousel() {
     };
 
     useEffect(() => {
-        if (carousel.length > 0) {
+        if (carousel.length > 0) {  
             const interval = setInterval(autoRotate, 4000);
             return () => clearInterval(interval);
         }
